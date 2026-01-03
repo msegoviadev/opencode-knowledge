@@ -1,3 +1,11 @@
 #!/usr/bin/env bash
 #MISE description="Build the project"
 bun build ./src/index.ts --outdir dist --target bun
+
+# Copy static assets that are loaded at runtime
+echo "Copying static assets..."
+mkdir -p dist/command
+mkdir -p dist/templates
+cp -r src/command/*.md dist/command/ 2>/dev/null || true
+cp -r templates dist/ 2>/dev/null || true
+echo "Build complete"

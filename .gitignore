@@ -1,12 +1,46 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
+*.tsbuildinfo
+
+# Logs
 *.log
+test-results/
+
+# OS metadata
 .DS_Store
+Thumbs.db
+Desktop.ini
+
+# Environment files
 .env
 .env.local
+
+# Test coverage
 coverage/
 .nyc_output/
+
+# Linting cache
 .eslintcache
+
+# Bun
 .bun/
 .bun.lockb
+
+# Memory directory
 .memory/
+
+# User-specific plugin configuration
+.opencode/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
