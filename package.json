@@ -22,8 +22,7 @@
     "provenance": true
   },
   "files": [
-    "dist",
-    "src/version.ts"
+    "dist"
   ],
   "dependencies": {
     "@opencode-ai/plugin": "1.0.85"
