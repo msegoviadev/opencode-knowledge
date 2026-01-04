@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/msegoviadev/opencode-knowledge/compare/v0.3.3...v0.3.4) (2026-01-04)
+
+
+### Bug Fixes
+
+* add fallback path for personality templates in npm package ([aa000a2](https://github.com/msegoviadev/opencode-knowledge/commit/aa000a2e404353cda7ad80ef30a551f906f3bd07))
+
 ## [0.3.3](https://github.com/msegoviadev/opencode-knowledge/compare/v0.3.2...v0.3.3) (2026-01-04)
 
 
