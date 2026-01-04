@@ -6,6 +6,13 @@ bun build ./src/index.ts --outdir dist --target bun
 echo "Copying static assets..."
 mkdir -p dist/command
 mkdir -p dist/templates
-cp -r src/command/*.md dist/command/ 2>/dev/null || true
+
+# Copy command directory (including .gitkeep if no .md files exist)
+if ls src/command/*.md 1> /dev/null 2>&1; then
+  cp -r src/command/*.md dist/command/
+else
+  cp src/command/.gitkeep dist/command/ 2>/dev/null || true
+fi
+
 cp -r templates dist/ 2>/dev/null || true
 echo "Build complete"
