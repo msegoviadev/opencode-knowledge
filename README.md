@@ -1,87 +1,70 @@
 # opencode-knowledge
 
-An OpenCode plugin
+Customize OpenCode's personality and expertise by choosing different AI personas.
 
-> An OpenCode plugin created from the [opencode-plugin-template](https://github.com/zenobi-us/opencode-plugin-template)
+## Installation
 
-## Features
+Add the plugin to your OpenCode config:
 
-- 🏗️ TypeScript-based plugin architecture
-- 🔧 Mise task runner integration
-- 📦 Bun/npm build tooling
-- ✨ ESLint + Prettier formatting
-- 🧪 Vitest testing setup
-- 🚀 GitHub Actions CI/CD
-- 📝 Release automation with release-please
-
-## Getting Started
-
-1. **Clone this template:**
-
-   ```bash
-   cp -r opencode-plugin-template your-plugin-name
-   cd your-plugin-name
-   ```
-
-2. **Update package.json:**
-   - Change `name` to your plugin name
-   - Update `description`
-   - Update `repository.url`
-
-3. **Install dependencies:**
-
-   ```bash
-   bun install
-   ```
-
-4. **Implement your plugin in `src/index.ts`:**
-
-   ```typescript
-   import type { Plugin } from '@opencode-ai/plugin';
-
-   export const YourPlugin: Plugin = async (ctx) => {
-     return {
-       tool: {
-         // Your plugin tools here
-       },
-     };
-   };
-   ```
-
-5. **Test your plugin:**
-   ```bash
-   mise run test
-   ```
-
-## Development
-
-- `mise run build` - Build the plugin
-- `mise run test` - Run tests
-- `mise run lint` - Lint code
-- `mise run lint:fix` - Fix linting issues
-- `mise run format` - Format code with Prettier
-
-## Installation in OpenCode
-
-Create or edit `~/.config/opencode/config.json`:
+**Global config** (`~/.config/opencode/opencode.json` or `opencode.jsonc`):
 
 ```json
 {
-  "plugins": ["opencode-knowledge"]
+  "plugin": ["opencode-knowledge"]
 }
 ```
 
-## Author
+**Or per-project** (`opencode.json` or `opencode.jsonc` in your project root):
 
-msegoviadev <marcos@msegovia.dev>
+```json
+{
+  "plugin": ["opencode-knowledge"]
+}
+```
 
-## Repository
+## Configuration
 
-https://github.com/msegoviadev/opencode-knowledge
+Create a settings file at `.opencode/knowledge/settings.json` in your project directory:
 
-## Contributing
+```json
+{
+  "role": "staff_engineer"
+}
+```
 
-Contributions are welcome! Please file issues or submit pull requests on the GitHub repository.
+The plugin will inject the selected personality at the start of each OpenCode session.
+
+## Available Personalities
+
+### staff_engineer
+
+A skeptical, pragmatic Staff Engineer focused on architecture, coupling, operational risk, and maintainability. Assumes competence, asks critical questions, and provides direct, concise technical feedback.
+
+**Best for**: Code reviews, architecture decisions, production systems
+
+### cthulhu
+
+An ancient cosmic entity providing technical guidance with existential dread and cosmic perspective. Questions mortal assumptions about 'best practices' while delivering sound technical advice.
+
+**Best for**: When you need technical help but also want to contemplate the meaninglessness of time
+
+## Switching Personalities
+
+To change personalities, simply update the `role` field in `.opencode/knowledge/settings.json`:
+
+```json
+{
+  "role": "cthulhu"
+}
+```
+
+The new personality will take effect in your next OpenCode session.
+
+## Troubleshooting
+
+- **Settings file not found**: Make sure `.opencode/knowledge/settings.json` exists in your project root
+- **Personality not loading**: Verify the role name matches exactly (`staff_engineer` or `cthulhu`)
+- **Debug logs**: Check `/tmp/opencode-knowledge-debug.log` for detailed plugin activity
 
 ## License
 
