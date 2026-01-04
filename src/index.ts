@@ -129,6 +129,9 @@ async function loadPersonality(): Promise<string> {
     throw new Error(errorMsg);
   }
 
+  // Calculate __dirname at runtime to avoid build-time path baking
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
   // Load personality file
   const personalityPath = path.join(__dirname, '..', 'templates', 'personalities', `${role}.txt`);
 
