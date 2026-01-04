@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.1](https://github.com/msegoviadev/opencode-knowledge/compare/v0.3.0...v0.3.1) (2026-01-04)
+
+
+### Bug Fixes
+
+* ensure command directory is included in published package ([072f6e4](https://github.com/msegoviadev/opencode-knowledge/commit/072f6e428b25f665a64022256b2bfb573897a197))
+* handle missing command directory gracefully ([67198bb](https://github.com/msegoviadev/opencode-knowledge/commit/67198bb3bdb912e348538271d5f154783f34b4ed))
+
 ## [0.3.0](https://github.com/msegoviadev/opencode-knowledge/compare/v0.2.0...v0.3.0) (2026-01-04)
 
 
