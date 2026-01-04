@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/msegoviadev/opencode-knowledge/compare/v0.3.1...v0.3.2) (2026-01-04)
+
+
+### Bug Fixes
+
+* calculate __dirname at runtime in loadPersonality ([7859a2a](https://github.com/msegoviadev/opencode-knowledge/commit/7859a2a70ff5ff73e35deb412adba62437fe0108))
+
 ## [0.3.1](https://github.com/msegoviadev/opencode-knowledge/compare/v0.3.0...v0.3.1) (2026-01-04)
 
 
