@@ -132,8 +132,13 @@ async function loadPersonality(): Promise<string> {
   // Calculate __dirname at runtime to avoid build-time path baking
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-  // Load personality file
-  const personalityPath = path.join(__dirname, '..', 'templates', 'personalities', `${role}.txt`);
+  // Load personality file - try both possible locations
+  let personalityPath = path.join(__dirname, '..', 'templates', 'personalities', `${role}.txt`);
+
+  if (!existsSync(personalityPath)) {
+    // Fallback for bundled dist structure (templates inside dist/)
+    personalityPath = path.join(__dirname, 'templates', 'personalities', `${role}.txt`);
+  }
 
   if (!existsSync(personalityPath)) {
     const errorMsg = `❌ CONFIGURATION ERROR: Personality file not found at ${personalityPath}. Available roles should have a corresponding .txt file in templates/personalities/`;
