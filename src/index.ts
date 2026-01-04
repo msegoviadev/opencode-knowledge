@@ -70,9 +70,10 @@ async function loadCommands(): Promise<ParsedCommand[]> {
   const commands: ParsedCommand[] = [];
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-  let commandDir = path.join(__dirname, 'command');
+  const commandDir = path.join(__dirname, 'command');
+
   if (!existsSync(commandDir)) {
-    commandDir = path.join(__dirname, '..', 'command');
+    return commands;
   }
 
   const glob = new Bun.Glob('**/*.md');
