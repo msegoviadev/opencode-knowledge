@@ -7,11 +7,9 @@
     "email": "marcos@msegovia.dev"
   },
   "type": "module",
+  "main": "./dist/index.js",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    }
+    ".": "./dist/index.js"
   },
   "repository": {
     "type": "git",
