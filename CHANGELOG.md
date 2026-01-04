@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/msegoviadev/opencode-knowledge/compare/v0.3.2...v0.3.3) (2026-01-04)
+
+
+### Bug Fixes
+
+* add main field and remove non-existent types declaration ([040b5aa](https://github.com/msegoviadev/opencode-knowledge/commit/040b5aa12486b65ea66fc05fe6219fc089856615))
+
 ## [0.3.2](https://github.com/msegoviadev/opencode-knowledge/compare/v0.3.1...v0.3.2) (2026-01-04)
 
 
