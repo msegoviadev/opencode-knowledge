@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/msegoviadev/opencode-knowledge/compare/v0.2.0...v0.3.0) (2026-01-04)
+
+
+### Features
+
+* update dependency lockfile ([660f98a](https://github.com/msegoviadev/opencode-knowledge/commit/660f98a7c256eb0b80882740080780ac64ef96c3))
+
 ## [0.2.0](https://github.com/msegoviadev/opencode-knowledge/compare/v0.1.0...v0.2.0) (2026-01-03)
 
 
