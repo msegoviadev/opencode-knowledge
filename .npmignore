@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+test-results/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Environment files
+.env
+.env.local
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Linting cache
+.eslintcache
+
+# Bun
+.bun/
+.bun.lockb
+
+# Memory directory
+.memory/
+
+# User-specific plugin configuration
+.opencode/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Git specific (but NOT dist/ - needed for npm package)
+.git
+.gitignore
+
+# Keep dist/ in the package!
+!dist/
