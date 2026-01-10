@@ -2,6 +2,8 @@
  * Template rendering utilities
  */
 
+/* eslint-disable no-console */
+
 import type { TemplateVariables } from './types.js';
 import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
@@ -97,22 +99,6 @@ export function escapePrompt(text: string): string {
     .replace(/"/g, '\\"')
     .replace(/\$/g, '\\$')
     .replace(/`/g, '\\`');
-}
-
-/**
- * Format category-tag map for display
- */
-export function formatCategoryTagMap(categoryTagMap: Record<string, string[]>): string {
-  const lines: string[] = [];
-
-  for (const [category, tags] of Object.entries(categoryTagMap)) {
-    // Show category with top 5 tags
-    const topTags = tags.slice(0, 5);
-    const more = tags.length > 5 ? ` +${tags.length - 5} more` : '';
-    lines.push(`  ${category} [${topTags.join(', ')}${more}]`);
-  }
-
-  return lines.join('\n');
 }
 
 /**

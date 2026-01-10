@@ -9,10 +9,22 @@ You have access to a comprehensive knowledge base containing {{CATEGORIES_COUNT}
 **Packages:** 
 {{CORE_PACKAGES_LIST}}
 
-### Your Task
-{{USER_PROMPT}}
+### Available Knowledge Tools
 
-### Knowledge Loading
-You can load specific knowledge packages using the knowledge_load tool when relevant to the task at hand. Focus on packages that match the technical domain or problem you're solving.
+You have access to the following tools for working with the knowledge vault:
 
-Available knowledge packages can be discovered by searching for specific tags, technologies, or domains using the knowledge_search tool.
+**knowledge_search** - Search for packages by tags
+- Use this to discover relevant knowledge packages
+- Provide comma-separated tags (e.g., "typescript,react,testing")
+- Returns ranked list of matching packages with relevance scores
+
+**knowledge_load** - Load packages into context
+- Use this to inject knowledge package content into the session
+- Provide comma-separated paths (e.g., "standards/code-conventions.md")
+- Returns package content and metadata for your reference
+
+**knowledge_index** - Rebuild catalog (rarely needed)
+- Use this if search results seem outdated or after adding packages
+- Automatically runs on session start
+
+Use these tools proactively when you need domain-specific guidance or best practices.

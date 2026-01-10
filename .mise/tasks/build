@@ -4,15 +4,9 @@ bun build ./src/index.ts --outdir dist --target bun
 
 # Copy static assets that are loaded at runtime
 echo "Copying static assets..."
-mkdir -p dist/command
 mkdir -p dist/templates
 
-# Copy command directory (including .gitkeep if no .md files exist)
-if ls src/command/*.md 1> /dev/null 2>&1; then
-  cp -r src/command/*.md dist/command/
-else
-  cp src/command/.gitkeep dist/command/ 2>/dev/null || true
-fi
-
+# Copy templates (personalities and prompt templates)
 cp -r templates dist/ 2>/dev/null || true
+
 echo "Build complete"
