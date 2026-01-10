@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/msegoviadev/opencode-knowledge/compare/v0.3.4...v0.4.0) (2026-01-10)
+
+
+### Features
+
+* implement knowledge management system with custom tools ([4833030](https://github.com/msegoviadev/opencode-knowledge/commit/4833030d6730a4f20641ca5e633bfd48ea5caa04))
+
 ## [0.3.4](https://github.com/msegoviadev/opencode-knowledge/compare/v0.3.3...v0.3.4) (2026-01-04)
 
 
