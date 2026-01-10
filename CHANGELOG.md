@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/msegoviadev/opencode-knowledge/compare/v0.4.0...v0.4.1) (2026-01-10)
+
+
+### Bug Fixes
+
+* add npmignore ([ce35b3a](https://github.com/msegoviadev/opencode-knowledge/commit/ce35b3a0af2a19fe9520a5fc10a4eca21f867a7e))
+
 ## [0.4.0](https://github.com/msegoviadev/opencode-knowledge/compare/v0.3.4...v0.4.0) (2026-01-10)
 
 
