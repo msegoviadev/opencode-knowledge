@@ -29,6 +29,9 @@ jobs:
           cache: true
           experimental: true
 
+      - name: Setup
+        run: mise run setup
+
       - name: Build
         run: mise run build
 
