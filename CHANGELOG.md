@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/msegoviadev/opencode-knowledge/compare/v0.4.1...v0.4.2) (2026-01-10)
+
+
+### Bug Fixes
+
+* install dependencies before build in publish workflow ([ddaa429](https://github.com/msegoviadev/opencode-knowledge/commit/ddaa42991ab8dcdd7031f6a20408990220440307))
+
 ## [0.4.1](https://github.com/msegoviadev/opencode-knowledge/compare/v0.4.0...v0.4.1) (2026-01-10)
 
 
