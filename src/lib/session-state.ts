@@ -46,9 +46,8 @@ function persistSessionState(sessionId: string, state: SessionState): void {
 
 /**
  * Create a new session state
- * Loads role from settings.json
- * @throws Error if state already exists for this session
- * @throws Error if settings.json is missing or invalid
+ * Loads role from settings.json if present
+ * @throws Error if settings.json exists but cannot be read/parsed
  */
 export async function createSessionState(sessionId: string): Promise<void> {
   // Try loading from file first
@@ -60,30 +59,17 @@ export async function createSessionState(sessionId: string): Promise<void> {
   }
 
   const settingsPath = '.opencode/knowledge/settings.json';
+  let role: string | null = null;
 
-  if (!existsSync(settingsPath)) {
-    throw new Error(
-      `CONFIGURATION ERROR: Cannot create session state - settings file not found at ${settingsPath}`
-    );
-  }
-
-  let role: string;
-  try {
-    const settingsContent = await readFile(settingsPath, 'utf-8');
-    const settings = JSON.parse(settingsContent);
-
-    if (!settings.role) {
-      throw new Error(
-        `CONFIGURATION ERROR: Cannot create session state - missing 'role' field in ${settingsPath}`
-      );
+  // Only try to load role if settings.json exists
+  if (existsSync(settingsPath)) {
+    try {
+      const settingsContent = await readFile(settingsPath, 'utf-8');
+      const settings = JSON.parse(settingsContent);
+      role = settings.role || null;
+    } catch (error) {
+      throw new Error(`Error reading settings.json: ${error}`);
     }
-
-    role = settings.role;
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('CONFIGURATION ERROR')) {
-      throw error;
-    }
-    throw new Error(`Error reading settings.json: ${error}`);
   }
 
   const state: SessionState = {

@@ -47,12 +47,9 @@ export const opencodeKnowledge: Plugin = async () => {
       try {
         const state = getSessionState(input.sessionID);
 
-        // First message: inject full knowledge map + personality
+        // First message: inject full knowledge map + personality (if configured)
         if (state.isFirstPrompt) {
           // await logToFile(`🎯 First message in session ${input.sessionID}`);
-
-          // Load personality
-          const personality = await loadPersonality(state.role);
 
           // Check if vault exists
           const vaultExists = existsSync('.opencode/knowledge/vault');
@@ -82,14 +79,18 @@ export const opencodeKnowledge: Plugin = async () => {
             // await logToFile('✅ Knowledge map injected');
           }
 
-          // Always inject personality
-          output.parts.push({
-            type: 'text',
-            text: `## Role Context\n\n${personality}`,
-            id: `personality-${Date.now()}`,
-            sessionID: input.sessionID,
-            messageID: input.messageID || '',
-          } as any);
+          // Only inject personality if role is configured
+          if (state.role) {
+            const personality = await loadPersonality(state.role);
+
+            output.parts.push({
+              type: 'text',
+              text: `## Role Context\n\n${personality}`,
+              id: `personality-${Date.now()}`,
+              sessionID: input.sessionID,
+              messageID: input.messageID || '',
+            } as any);
+          }
 
           updateSessionState(input.sessionID, {
             isFirstPrompt: false,

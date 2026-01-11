@@ -42,17 +42,7 @@ Add the plugin to your OpenCode config:
 
 ## Quick Start
 
-### 1. Create Settings File
-
-Create `.opencode/knowledge/settings.json` in your project:
-
-```json
-{
-  "role": "staff_engineer"
-}
-```
-
-### 2. Create Knowledge Vault
+### 1. Create Knowledge Vault
 
 Create the vault directory structure:
 
@@ -60,7 +50,7 @@ Create the vault directory structure:
 mkdir -p .opencode/knowledge/vault/standards
 ```
 
-### 3. Create Your First Knowledge Package
+### 2. Create Your First Knowledge Package
 
 Create `.opencode/knowledge/vault/standards/code-conventions.md`:
 
@@ -88,7 +78,7 @@ category: standards
 - Always use semicolons
 ```
 
-### 4. Start OpenCode Session
+### 3. Start OpenCode Session
 
 The knowledge catalog is **automatically built on session start**. Just start a new session and the plugin will:
 
@@ -96,11 +86,23 @@ The knowledge catalog is **automatically built on session start**. Just start a 
 - Build the searchable catalog
 - Inject knowledge map on first message
 
+### 4. Configure Personality (Optional)
+
+Optionally configure OpenCode's communication style by creating `.opencode/knowledge/settings.json`:
+
+```json
+{
+  "role": "staff_engineer"
+}
+```
+
+See the [Personalities](#personalities-optional) section for available options.
+
 ---
 
 ## Personalities (Optional)
 
-You can optionally configure OpenCode's communication style by setting a personality in your `settings.json`.
+The plugin works perfectly fine without any personality configuration. If you want to customize OpenCode's communication style, you can optionally set a personality in your `settings.json`.
 
 ### staff_engineer
 
