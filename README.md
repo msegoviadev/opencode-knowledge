@@ -1,24 +1,20 @@
-# opencode-knowledge
+# opencode-knowledge <img src="./assets/opencode-knowledge-logo.png" align="right" height="100"/>
 
-A comprehensive knowledge management system for OpenCode that provides:
-- **Role-based AI personalities** - Customize OpenCode's communication style
-- **Knowledge vault** - Organize coding standards, patterns, and best practices
-- **Tag-based search** - Quickly find relevant knowledge packages
-- **Session management** - Track loaded packages and optimize token usage
+An OpenCode plugin that dynamically loads knowledge from your vault on-demand. Add any content you want, the AI figures out what to load using tags and descriptions.
 
 ## Features
 
-### 🎭 Personality System
-Choose from different AI personas (staff engineer, frontend specialist, cthulhu, etc.) that influence how OpenCode communicates and approaches problems.
-
 ### 📚 Knowledge Vault
-Create a structured library of markdown-based knowledge packages with frontmatter metadata for easy discovery and loading.
+
+Organize coding standards, patterns, and best practices in markdown files with frontmatter metadata.
 
 ### 🔍 Smart Search
-Tag-based search system finds relevant knowledge packages based on your current task.
+
+Tag-based search finds relevant packages. The AI uses tags and descriptions to discover the right context.
 
 ### 💾 Session Persistence
-Tracks loaded packages across sessions and provides token-optimized context injection.
+
+Automatically indexes your vault on session start and tracks loaded packages.
 
 ---
 
@@ -56,9 +52,9 @@ Create `.opencode/knowledge/settings.json` in your project:
 }
 ```
 
-### 2. Create Knowledge Vault (Optional)
+### 2. Create Knowledge Vault
 
-If you want to use the knowledge management features, create a vault structure:
+Create the vault directory structure:
 
 ```bash
 mkdir -p .opencode/knowledge/vault/standards
@@ -81,10 +77,12 @@ category: standards
 # Code Conventions
 
 ## Naming
+
 - Use camelCase for variables and functions
 - Use PascalCase for classes and types
 
 ## Formatting
+
 - Use single quotes for strings
 - Line width: 100 characters
 - Always use semicolons
@@ -93,27 +91,16 @@ category: standards
 ### 4. Start OpenCode Session
 
 The knowledge catalog is **automatically built on session start**. Just start a new session and the plugin will:
+
 - Scan your vault for packages
 - Build the searchable catalog
 - Inject knowledge map on first message
 
-### 5. Search and Load Knowledge
-
-Search for packages by tags:
-
-```
-knowledge_search [tags=typescript,conventions]
-```
-
-Load packages into your session:
-
-```
-knowledge_load [paths=standards/code-conventions.md]
-```
-
 ---
 
-## Available Personalities
+## Personalities (Optional)
+
+You can optionally configure OpenCode's communication style by setting a personality in your `settings.json`.
 
 ### staff_engineer
 
@@ -126,73 +113,6 @@ Skeptical, pragmatic Staff Engineer focused on architecture, coupling, operation
 Ancient cosmic entity providing technical guidance with existential dread and cosmic perspective.
 
 **Best for**: When you need technical help but also want to contemplate the meaninglessness of time
-
----
-
-## Tools
-
-### knowledge_search
-
-Search for knowledge packages by tags.
-
-```
-knowledge_search [tags=typescript,react,testing]
-```
-
-**Parameters**: Comma-separated list of tags
-
-**Output**: Ranked list of matching packages with relevance scores
-
-**Example**:
-```
-Found 5 packages matching [typescript, react]:
-
-- **frontend/react-patterns.md** (75%)
-  Tags: typescript, react, patterns
-  Common React patterns and best practices
-
-- **standards/typescript-conventions.md** (50%)
-  Tags: typescript, conventions
-  TypeScript coding standards
-```
-
----
-
-### knowledge_load
-
-Load knowledge packages into the current session.
-
-```
-knowledge_load [paths=standards/code-conventions.md,frontend/react-patterns.md]
-```
-
-**Parameters**: Comma-separated list of package paths (relative to vault/)
-
-**Output**: Package content injected into context
-
-**Features**:
-- Deduplication (won't load same package twice)
-- Session tracking (remembers what's loaded)
-- Error handling (warns about missing packages)
-
----
-
-### knowledge_index
-
-Manually rebuild the knowledge catalog from your vault.
-
-```
-knowledge_index
-```
-
-**Output**: Summary of categories and packages indexed.
-
-**Note**: The catalog is **automatically built on session start**, so you rarely need this tool.
-
-**When to use**:
-- After adding packages mid-session
-- If auto-build failed during session start
-- To verify catalog contents
 
 ---
 
@@ -212,8 +132,8 @@ required_knowledge:
   - other-package-1
   - other-package-2
 file_patterns:
-  - "*.tsx"
-  - "*.test.ts"
+  - '*.tsx'
+  - '*.test.ts'
 ---
 
 # Package Title
@@ -223,13 +143,13 @@ Your knowledge content here...
 
 ### Frontmatter Fields
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `tags` | Yes | Array of searchable tags |
-| `description` | Yes | Brief summary (used in search results) |
-| `category` | Yes | Category for organization (e.g., `frontend`, `backend`, `standards`) |
-| `required_knowledge` | No | Other packages that should be loaded first |
-| `file_patterns` | No | File patterns where this knowledge applies |
+| Field                | Required | Description                                                          |
+| -------------------- | -------- | -------------------------------------------------------------------- |
+| `tags`               | Yes      | Array of searchable tags                                             |
+| `description`        | Yes      | Brief summary (used in search results)                               |
+| `category`           | Yes      | Category for organization (e.g., `frontend`, `backend`, `standards`) |
+| `required_knowledge` | No       | Other packages that should be loaded first                           |
+| `file_patterns`      | No       | File patterns where this knowledge applies                           |
 
 ---
 
@@ -239,9 +159,9 @@ Your knowledge content here...
 your-project/
 └── .opencode/
     └── knowledge/
-        ├── settings.json              # Plugin configuration
-        ├── knowledge.json             # Auto-generated catalog (gitignored)
-        ├── vault/                     # Your knowledge packages
+        ├── settings.json
+        ├── knowledge.json
+        ├── vault/
         │   ├── frontend/
         │   │   ├── react-patterns.md
         │   │   └── state-management.md
@@ -250,136 +170,10 @@ your-project/
         │   └── standards/
         │       ├── code-conventions.md
         │       └── testing-guide.md
-        └── tracker/                   # Session state (gitignored)
+        └── tracker/
             ├── session-state.jsonl
             └── knowledge-reads.jsonl
 ```
-
----
-
-## Token Optimization
-
-The plugin uses a single-phase approach for optimal token usage:
-
-### First Message Only
-- Shows full category-tag map (~500-1000 tokens depending on vault size)
-- Injects personality
-- Documents available tools with examples
-- Creates session state
-
-### Subsequent Messages
-- No knowledge context injected
-- LLM uses memory of first message
-- **100% token savings** on subsequent messages
-
-This approach provides significant token savings while ensuring the LLM has all the context it needs from the initial session setup.
-
----
-
-## Example Vault Structure
-
-Here's a recommended organization pattern:
-
-```
-vault/
-├── frontend/
-│   ├── react-patterns.md          # React best practices
-│   ├── state-management.md        # Redux, Context, etc.
-│   ├── component-testing.md       # Testing components
-│   └── accessibility.md           # A11y guidelines
-├── backend/
-│   ├── api-design.md              # REST/GraphQL patterns
-│   ├── database-patterns.md       # ORM, migrations
-│   └── error-handling.md          # Error handling strategies
-├── standards/
-│   ├── code-conventions.md        # General coding standards
-│   ├── git-workflow.md            # Branch strategy, commits
-│   └── code-review.md             # Review guidelines
-└── infrastructure/
-    ├── docker-patterns.md         # Container best practices
-    ├── ci-cd.md                   # Pipeline patterns
-    └── monitoring.md              # Observability
-```
-
----
-
-## Advanced Usage
-
-### Creating Cross-Referenced Packages
-
-Use `required_knowledge` to create dependency chains:
-
-```markdown
----
-tags:
-  - react
-  - advanced
-  - performance
-description: Advanced React performance optimization
-category: frontend
-required_knowledge:
-  - frontend/react-patterns
-  - standards/code-conventions
----
-
-# Advanced React Performance
-
-This builds on basic patterns...
-```
-
-### File Pattern Targeting
-
-Specify when knowledge applies:
-
-```markdown
----
-tags:
-  - testing
-  - jest
-description: Jest testing patterns
-category: frontend
-file_patterns:
-  - "*.test.ts"
-  - "*.test.tsx"
-  - "*.spec.ts"
----
-
-# Jest Testing Guide
-```
-
----
-
-## Troubleshooting
-
-### Settings file not found
-
-**Error**: `CONFIGURATION ERROR: Settings file not found`
-
-**Solution**: Create `.opencode/knowledge/settings.json` with:
-```json
-{
-  "role": "staff_engineer"
-}
-```
-
-### Personality not loading
-
-**Error**: `CONFIGURATION ERROR: Personality file not found`
-
-**Solution**: Verify the role name in `settings.json` matches an available personality (`staff_engineer` or `cthulhu`)
-
-### Catalog not found
-
-**Error**: `Knowledge catalog not found. Run knowledge_index first.`
-
-**Solution**: Run `knowledge_index` to build the catalog from your vault
-
-### Search returns no results
-
-**Possible causes**:
-1. Catalog is outdated → Run `knowledge_index`
-2. Tags don't match → Check tag spelling
-3. No packages with those tags → Add packages or adjust search
 
 ---
 
@@ -409,17 +203,6 @@ mise run lint:fix   # Auto-fix issues
 ```bash
 mise run format
 ```
-
----
-
-## Roadmap
-
-- [ ] Auto-load packages based on file patterns
-- [ ] Knowledge package dependencies resolution
-- [ ] Usage analytics and metrics
-- [ ] Export/import vault bundles
-- [ ] Knowledge package templates
-- [ ] VSCode extension for vault management
 
 ---
 
