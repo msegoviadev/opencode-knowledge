@@ -149,7 +149,7 @@ Your knowledge content here...
 | `description`        | Yes      | Brief summary (used in search results)                               |
 | `category`           | Yes      | Category for organization (e.g., `frontend`, `backend`, `standards`) |
 | `required_knowledge` | No       | Other packages that should be loaded first                           |
-| `file_patterns`      | No       | File patterns where this knowledge applies                           |
+| `file_patterns`      | No       | File patterns where this knowledge applies (not yet implemented)     |
 
 ---
 
