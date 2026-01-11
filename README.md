@@ -217,6 +217,12 @@ Contributions welcome! Please:
 
 ---
 
+## Credits
+
+Special thanks to [@canyavall](https://github.com/canyavall) for being the creative mind that came up with the idea and initial working solution. He continues to improve this in the shadows to this day.
+
+---
+
 ## License
 
 MIT License. See the [LICENSE](LICENSE) file for details.
