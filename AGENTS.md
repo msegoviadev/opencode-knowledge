@@ -63,3 +63,12 @@
 - **Type**: ES Module package for OpenCode plugin system
 - **Target**: Bun runtime, ES2021+
 - **Purpose**: Background task execution and lifecycle management
+
+## Important Notes
+
+### CHANGELOG.md
+
+- **NEVER** manually update CHANGELOG.md
+- The changelog is automatically managed by release-please automation
+- All changes are tracked through conventional commits and automated releases
+- Manual edits will be overwritten on next release

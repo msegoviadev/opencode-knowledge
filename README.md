@@ -150,8 +150,32 @@ Your knowledge content here...
 | `tags`               | Yes      | Array of searchable tags                                             |
 | `description`        | Yes      | Brief summary (used in search results)                               |
 | `category`           | Yes      | Category for organization (e.g., `frontend`, `backend`, `standards`) |
-| `required_knowledge` | No       | Other packages that should be loaded first                           |
+| `required_knowledge` | No       | Other packages that should be loaded automatically before this one (supports recursive dependencies)   |
 | `file_patterns`      | No       | File patterns where this knowledge applies (not yet implemented)     |
+
+### Dependency Loading
+
+The `required_knowledge` field enables automatic dependency loading. When you load a package, the plugin automatically loads all its dependencies first, recursively.
+
+**Example:**
+
+```markdown
+<!-- vault/personal/blog-writing.md -->
+---
+tags: [blog, writing]
+description: Blog writing guidelines
+category: personal
+required_knowledge:
+  - personal/author-context
+---
+```
+
+When AI loads `personal/blog-writing.md`, the plugin:
+1. Detects the `required_knowledge` dependency
+2. Automatically loads `personal/author-context.md` first
+3. Then loads `personal/blog-writing.md`
+
+This ensures the AI always has complete context without manual tracking. Dependencies can be nested (Package A requires B, B requires C), and the plugin handles circular dependencies gracefully.
 
 ---
 

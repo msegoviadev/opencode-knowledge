@@ -6,8 +6,58 @@
 import { tool } from '@opencode-ai/plugin';
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
+import { parseFrontmatter } from '../frontmatter-parser.js';
 
 const VAULT_DIR = '.opencode/knowledge/vault';
+
+/**
+ * Recursively resolve package dependencies
+ * Returns packages in dependency order (dependencies first)
+ */
+function resolveDependencies(
+  packagePath: string,
+  vaultDir: string,
+  loaded: Set<string> = new Set()
+): string[] {
+  // Prevent circular dependencies
+  if (loaded.has(packagePath)) {
+    return [];
+  }
+
+  loaded.add(packagePath);
+  const result: string[] = [];
+
+  // Normalize path (add .md if missing)
+  const normalizedPath = packagePath.endsWith('.md') ? packagePath : `${packagePath}.md`;
+  const fullPath = join(vaultDir, normalizedPath);
+
+  if (!existsSync(fullPath)) {
+    return [];
+  }
+
+  try {
+    // Parse frontmatter to check for dependencies
+    const content = readFileSync(fullPath, 'utf-8');
+    const { frontmatter } = parseFrontmatter(content);
+
+    // Recursively load dependencies first
+    if (frontmatter.required_knowledge && Array.isArray(frontmatter.required_knowledge)) {
+      for (const dep of frontmatter.required_knowledge) {
+        const depPath = dep.endsWith('.md') ? dep : `${dep}.md`;
+        const depPackages = resolveDependencies(depPath, vaultDir, loaded);
+        result.push(...depPackages);
+      }
+    }
+
+    // Then add this package
+    result.push(normalizedPath);
+  } catch {
+    // If we can't read/parse, skip this package
+    return [];
+  }
+
+  return result;
+}
 
 export const knowledgeLoadTool = tool({
   description:
@@ -20,19 +70,30 @@ export const knowledgeLoadTool = tool({
       ),
   },
   async execute(args) {
-    const packagePaths = args.paths
+    const requestedPaths = args.paths
       .split(',')
       .map((p) => p.trim())
       .filter(Boolean);
 
-    if (packagePaths.length === 0) {
+    if (requestedPaths.length === 0) {
       return 'No package paths provided';
     }
 
+    // Resolve all dependencies recursively
+    const allPackagePaths = new Set<string>();
+    const loadedTracker = new Set<string>();
+
+    for (const path of requestedPaths) {
+      const resolved = resolveDependencies(path, VAULT_DIR, loadedTracker);
+      resolved.forEach((p) => allPackagePaths.add(p));
+    }
+
+    // Load all packages in dependency order
     const loaded = [];
     const failed = [];
+    const packageArray = Array.from(allPackagePaths);
 
-    for (const packagePath of packagePaths) {
+    for (const packagePath of packageArray) {
       const fullPath = join(VAULT_DIR, packagePath);
 
       if (!existsSync(fullPath)) {
@@ -51,7 +112,15 @@ export const knowledgeLoadTool = tool({
     let output = '';
 
     if (loaded.length > 0) {
-      output += `✅ Loaded ${loaded.length}/${packagePaths.length} packages:\n\n`;
+      const totalCount = packageArray.length;
+      const requestedCount = requestedPaths.length;
+      const depsCount = totalCount - requestedCount;
+
+      if (depsCount > 0) {
+        output += `✅ Loaded ${loaded.length}/${totalCount} packages (${requestedCount} requested + ${depsCount} dependencies):\n\n`;
+      } else {
+        output += `✅ Loaded ${loaded.length}/${totalCount} packages:\n\n`;
+      }
       output += loaded.join('\n\n---\n\n');
     }
 
