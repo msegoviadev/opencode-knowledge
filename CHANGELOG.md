@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/msegoviadev/opencode-knowledge/compare/v0.4.2...v0.5.0) (2026-01-11)
+
+
+### Features
+
+* make personality configuration optional ([e345bf6](https://github.com/msegoviadev/opencode-knowledge/commit/e345bf6678801f2b6974c6a7bb159a03beb8e7bb))
+
 ## [0.4.2](https://github.com/msegoviadev/opencode-knowledge/compare/v0.4.1...v0.4.2) (2026-01-10)
 
 
