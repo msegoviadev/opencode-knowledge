@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/msegoviadev/opencode-knowledge/compare/v0.5.0...v0.5.1) (2026-01-11)
+
+
+### Bug Fixes
+
+* implement recursive dependency loading for required_knowledge field ([0565c37](https://github.com/msegoviadev/opencode-knowledge/commit/0565c377d0f3ac59e8162df039e423e3d7914efd))
+
 ## [0.5.0](https://github.com/msegoviadev/opencode-knowledge/compare/v0.4.2...v0.5.0) (2026-01-11)
 
 
