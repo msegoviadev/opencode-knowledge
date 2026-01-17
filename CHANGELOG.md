@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.0](https://github.com/msegoviadev/opencode-knowledge/compare/v0.5.1...v0.6.0) (2026-01-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* Removed personality/role configuration feature. The plugin now focuses solely on knowledge vault management without communication style customization.
+
+### Features
+
+* remove personalities feature ([d648bce](https://github.com/msegoviadev/opencode-knowledge/commit/d648bceb18179c07c5fedf0fb6c497d6e90719f3))
+
 ## [0.5.1](https://github.com/msegoviadev/opencode-knowledge/compare/v0.5.0...v0.5.1) (2026-01-11)
 
 
