@@ -3,8 +3,6 @@
  */
 
 import type { SessionState } from './types.js';
-import { readFile } from 'fs/promises';
-import { existsSync } from 'fs';
 import { appendJsonl, readLastJsonl } from './file-utils.js';
 
 const sessionStates = new Map<string, SessionState>();
@@ -21,7 +19,6 @@ function loadSessionStateFromFile(sessionId: string): SessionState | null {
   }
 
   return {
-    role: state.role,
     isFirstPrompt: state.isFirstPrompt,
     loadedPackages: new Set(state.loadedPackages || []),
     createdAt: new Date(state.createdAt),
@@ -35,7 +32,6 @@ function loadSessionStateFromFile(sessionId: string): SessionState | null {
 function persistSessionState(sessionId: string, state: SessionState): void {
   appendJsonl(SESSION_STATE_FILE, {
     sessionId,
-    role: state.role,
     isFirstPrompt: state.isFirstPrompt,
     loadedPackages: Array.from(state.loadedPackages),
     createdAt: state.createdAt.toISOString(),
@@ -46,8 +42,6 @@ function persistSessionState(sessionId: string, state: SessionState): void {
 
 /**
  * Create a new session state
- * Loads role from settings.json if present
- * @throws Error if settings.json exists but cannot be read/parsed
  */
 export async function createSessionState(sessionId: string): Promise<void> {
   // Try loading from file first
@@ -58,22 +52,7 @@ export async function createSessionState(sessionId: string): Promise<void> {
     return;
   }
 
-  const settingsPath = '.opencode/knowledge/settings.json';
-  let role: string | null = null;
-
-  // Only try to load role if settings.json exists
-  if (existsSync(settingsPath)) {
-    try {
-      const settingsContent = await readFile(settingsPath, 'utf-8');
-      const settings = JSON.parse(settingsContent);
-      role = settings.role || null;
-    } catch (error) {
-      throw new Error(`Error reading settings.json: ${error}`);
-    }
-  }
-
   const state: SessionState = {
-    role,
     isFirstPrompt: true,
     loadedPackages: new Set(),
     createdAt: new Date(),

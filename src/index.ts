@@ -5,11 +5,7 @@
 import type { Plugin } from '@opencode-ai/plugin';
 import { existsSync } from 'fs';
 import { createSessionState, getSessionState, updateSessionState } from './lib/session-state.js';
-import {
-  loadPersonality,
-  loadAndRenderTemplate,
-  getCorePackages,
-} from './lib/template-renderer.js';
+import { loadAndRenderTemplate, getCorePackages } from './lib/template-renderer.js';
 import { buildCategoryTagMap, formatCategoryTagMap } from './lib/knowledge-search.js';
 import { buildKnowledgeCatalog, saveCatalog } from './lib/knowledge-catalog.js';
 import { clearJsonl } from './lib/file-utils.js';
@@ -47,7 +43,7 @@ export const opencodeKnowledge: Plugin = async () => {
       try {
         const state = getSessionState(input.sessionID);
 
-        // First message: inject full knowledge map + personality (if configured)
+        // First message: inject full knowledge map
         if (state.isFirstPrompt) {
           // await logToFile(`🎯 First message in session ${input.sessionID}`);
 
@@ -77,19 +73,6 @@ export const opencodeKnowledge: Plugin = async () => {
             } as any);
 
             // await logToFile('✅ Knowledge map injected');
-          }
-
-          // Only inject personality if role is configured
-          if (state.role) {
-            const personality = await loadPersonality(state.role);
-
-            output.parts.push({
-              type: 'text',
-              text: `## Role Context\n\n${personality}`,
-              id: `personality-${Date.now()}`,
-              sessionID: input.sessionID,
-              messageID: input.messageID || '',
-            } as any);
           }
 
           updateSessionState(input.sessionID, {
@@ -142,8 +125,7 @@ export const opencodeKnowledge: Plugin = async () => {
           }
 
           await createSessionState(sessionId);
-          const state = getSessionState(sessionId);
-          // await logToFile(`✅ Session state created with role: ${state.role}`);
+          // await logToFile(`✅ Session state created`);
         }
       } catch (error) {
         // await logToFile(`❌ Error in event: ${error}`);

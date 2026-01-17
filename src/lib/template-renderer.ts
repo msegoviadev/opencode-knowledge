@@ -2,8 +2,6 @@
  * Template rendering utilities
  */
 
-/* eslint-disable no-console */
-
 import type { TemplateVariables } from './types.js';
 import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
@@ -52,41 +50,6 @@ export async function loadAndRenderTemplate(
 
   const content = await readFile(templatePath, 'utf-8');
   return renderTemplate(content, variables);
-}
-
-/**
- * Load personality template
- */
-export async function loadPersonality(role: string): Promise<string> {
-  // First try user config directory
-  let personalityPath = join('.opencode', 'knowledge', 'templates', 'personalities', `${role}.txt`);
-
-  if (!existsSync(personalityPath)) {
-    console.warn(`[template-renderer] Personality not found: ${role}, trying bundled defaults`);
-
-    // Fallback to bundled templates
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    personalityPath = join(__dirname, '..', 'templates', 'personalities', `${role}.txt`);
-
-    if (!existsSync(personalityPath)) {
-      // Try one more level up for bundled dist structure
-      personalityPath = join(__dirname, 'templates', 'personalities', `${role}.txt`);
-    }
-  }
-
-  // If still not found, try staff_engineer as ultimate fallback
-  if (!existsSync(personalityPath) && role !== 'staff_engineer') {
-    console.warn(`[template-renderer] Falling back to staff_engineer personality`);
-    return loadPersonality('staff_engineer');
-  }
-
-  if (!existsSync(personalityPath)) {
-    // Final fallback to hardcoded default
-    return 'Act as a Staff Engineer reviewing engineering work. Assume competence. Be skeptical, precise, and pragmatic.';
-  }
-
-  const content = await readFile(personalityPath, 'utf-8');
-  return content.trim();
 }
 
 /**

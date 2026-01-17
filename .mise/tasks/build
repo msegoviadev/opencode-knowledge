@@ -6,7 +6,7 @@ bun build ./src/index.ts --outdir dist --target bun
 echo "Copying static assets..."
 mkdir -p dist/templates
 
-# Copy templates (personalities and prompt templates)
+# Copy templates
 cp -r templates dist/ 2>/dev/null || true
 
 echo "Build complete"

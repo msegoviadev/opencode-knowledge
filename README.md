@@ -86,36 +86,6 @@ The knowledge catalog is **automatically built on session start**. Just start a 
 - Build the searchable catalog
 - Inject knowledge map on first message
 
-### 4. Configure Personality (Optional)
-
-Optionally configure OpenCode's communication style by creating `.opencode/knowledge/settings.json`:
-
-```json
-{
-  "role": "staff_engineer"
-}
-```
-
-See the [Personalities](#personalities-optional) section for available options.
-
----
-
-## Personalities (Optional)
-
-The plugin works perfectly fine without any personality configuration. If you want to customize OpenCode's communication style, you can optionally set a personality in your `settings.json`.
-
-### staff_engineer
-
-Skeptical, pragmatic Staff Engineer focused on architecture, coupling, operational risk, and maintainability.
-
-**Best for**: Code reviews, architecture decisions, production systems
-
-### cthulhu
-
-Ancient cosmic entity providing technical guidance with existential dread and cosmic perspective.
-
-**Best for**: When you need technical help but also want to contemplate the meaninglessness of time
-
 ---
 
 ## Knowledge Package Format
@@ -145,13 +115,13 @@ Your knowledge content here...
 
 ### Frontmatter Fields
 
-| Field                | Required | Description                                                          |
-| -------------------- | -------- | -------------------------------------------------------------------- |
-| `tags`               | Yes      | Array of searchable tags                                             |
-| `description`        | Yes      | Brief summary (used in search results)                               |
-| `category`           | Yes      | Category for organization (e.g., `frontend`, `backend`, `standards`) |
-| `required_knowledge` | No       | Other packages that should be loaded automatically before this one (supports recursive dependencies)   |
-| `file_patterns`      | No       | File patterns where this knowledge applies (not yet implemented)     |
+| Field                | Required | Description                                                                                          |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `tags`               | Yes      | Array of searchable tags                                                                             |
+| `description`        | Yes      | Brief summary (used in search results)                                                               |
+| `category`           | Yes      | Category for organization (e.g., `frontend`, `backend`, `standards`)                                 |
+| `required_knowledge` | No       | Other packages that should be loaded automatically before this one (supports recursive dependencies) |
+| `file_patterns`      | No       | File patterns where this knowledge applies (not yet implemented)                                     |
 
 ### Dependency Loading
 
@@ -160,17 +130,20 @@ The `required_knowledge` field enables automatic dependency loading. When you lo
 **Example:**
 
 ```markdown
-<!-- vault/personal/blog-writing.md -->
----
+## <!-- vault/personal/blog-writing.md -->
+
 tags: [blog, writing]
 description: Blog writing guidelines
 category: personal
 required_knowledge:
-  - personal/author-context
+
+- personal/author-context
+
 ---
 ```
 
 When AI loads `personal/blog-writing.md`, the plugin:
+
 1. Detects the `required_knowledge` dependency
 2. Automatically loads `personal/author-context.md` first
 3. Then loads `personal/blog-writing.md`
@@ -185,7 +158,6 @@ This ensures the AI always has complete context without manual tracking. Depende
 your-project/
 └── .opencode/
     └── knowledge/
-        ├── settings.json
         ├── knowledge.json
         ├── vault/
         │   ├── frontend/

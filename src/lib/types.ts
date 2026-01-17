@@ -3,7 +3,6 @@
  */
 
 export interface SessionState {
-  role: string | null;
   isFirstPrompt: boolean;
   loadedPackages: Set<string>;
   createdAt: Date;
