@@ -6,21 +6,9 @@
 import { tool } from '@opencode-ai/plugin';
 import { searchKnowledge } from '../knowledge-search.js';
 import { loadCatalog } from '../knowledge-catalog.js';
+import { createLogger } from '../logger.js';
 
-// const logToFile = async (message: string) => {
-//   try {
-//     const logEntry = `${new Date().toISOString()}: ${message}\n`;
-//     let existing = '';
-//     try {
-//       existing = await Bun.file('/tmp/opencode-knowledge-debug.log').text();
-//     } catch {
-//       // File doesn't exist yet
-//     }
-//     await Bun.write('/tmp/opencode-knowledge-debug.log', existing + logEntry);
-//   } catch {
-//     // ignore
-//   }
-// };
+const log = createLogger('tools.search');
 
 export const knowledgeSearchTool = tool({
   description:
@@ -38,22 +26,20 @@ export const knowledgeSearchTool = tool({
       .map((t) => t.trim())
       .filter(Boolean);
 
-    // await logToFile(`knowledge_search called with args.tags="${args.tags}"`);
-    // await logToFile(`Parsed tags: ${JSON.stringify(tagArray)}`);
+    log.debug('knowledge_search called', { tags: args.tags, parsedTags: tagArray });
 
     if (tagArray.length === 0) {
-      // await logToFile('knowledge_search - no tags provided');
+      log.debug('knowledge_search - no tags provided');
       return 'No tags provided. Please specify at least one tag.';
     }
 
     try {
-      // await logToFile(`knowledge_search - calling searchKnowledge with ${tagArray.length} tags`);
+      log.debug('knowledge_search - calling searchKnowledge', { tagCount: tagArray.length });
 
       const results = await searchKnowledge(tagArray);
       loadCatalog();
 
-      // await logToFile(`searchKnowledge returned ${results.length} results`);
-      // await logToFile(`Catalog loaded: yes`);
+      log.debug('searchKnowledge completed', { resultsCount: results.length });
 
       if (results.length === 0) {
         return `No knowledge packages found matching [${tagArray.join(', ')}]`;
@@ -73,7 +59,7 @@ export const knowledgeSearchTool = tool({
 
       return output;
     } catch (error) {
-      // await logToFile(`knowledge_search error: ${error}`);
+      log.error('knowledge_search error', { error: String(error) });
       return 'Failed to search knowledge vault. Please try again.';
     }
   },

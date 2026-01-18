@@ -12,25 +12,13 @@ import { clearJsonl } from './lib/file-utils.js';
 import { knowledgeSearchTool } from './lib/tools/search.js';
 import { knowledgeLoadTool } from './lib/tools/load.js';
 import { knowledgeIndexTool } from './lib/tools/index.js';
+import { initLogger, createLogger } from './lib/logger.js';
 
-// Simple logging
-// const logToFile = async (message: string) => {
-//   try {
-//     const logEntry = `${new Date().toISOString()}: ${message}\n`;
-//     let existing = '';
-//     try {
-//       existing = await Bun.file('/tmp/opencode-knowledge-debug.log').text();
-//     } catch {
-//       // File doesn't exist yet
-//     }
-//     await Bun.write('/tmp/opencode-knowledge-debug.log', existing + logEntry);
-//   } catch {
-//     // ignore
-//   }
-// };
+const log = createLogger('plugin');
 
-export const opencodeKnowledge: Plugin = async () => {
-  // await logToFile('Plugin initialized');
+export const opencodeKnowledge: Plugin = async (input) => {
+  initLogger(input.client);
+  log.info('Plugin initialized');
 
   return {
     tool: {
@@ -45,7 +33,7 @@ export const opencodeKnowledge: Plugin = async () => {
 
         // First message: inject full knowledge map
         if (state.isFirstPrompt) {
-          // await logToFile(`🎯 First message in session ${input.sessionID}`);
+          log.debug('First message in session', { sessionID: input.sessionID });
 
           // Check if vault exists
           const vaultExists = existsSync('.opencode/knowledge/vault');
@@ -72,7 +60,7 @@ export const opencodeKnowledge: Plugin = async () => {
               messageID: input.messageID || '',
             } as any);
 
-            // await logToFile('✅ Knowledge map injected');
+            log.debug('Knowledge map injected');
           }
 
           updateSessionState(input.sessionID, {
@@ -80,28 +68,28 @@ export const opencodeKnowledge: Plugin = async () => {
             categoriesShown: vaultExists,
           });
 
-          // await logToFile('✅ First message processed');
+          log.debug('First message processed');
         }
       } catch (error) {
-        // await logToFile(`❌ Error in chat.message: ${error}`);
+        log.error('Error in chat.message', { error: String(error) });
       }
     },
 
     event: async ({ event }) => {
       try {
         if (event.type === 'session.created') {
-          // await logToFile('🚀 session.created event');
+          log.debug('session.created event');
 
           const eventData = event as any;
           const sessionId = eventData.properties?.info?.id;
 
           if (!sessionId) {
-            const errorMsg = `❌ Could not extract session ID from session.created event`;
-            // await logToFile(errorMsg);
+            const errorMsg = 'Could not extract session ID from session.created event';
+            log.error(errorMsg);
             throw new Error(errorMsg);
           }
 
-          // await logToFile(`✅ Extracted session ID: ${sessionId}`);
+          log.debug('Extracted session ID', { sessionId });
 
           // Clear session tracking files
           clearJsonl('session-state.jsonl');
@@ -109,7 +97,7 @@ export const opencodeKnowledge: Plugin = async () => {
 
           // Auto-build knowledge catalog on session start
           if (existsSync('.opencode/knowledge/vault')) {
-            // await logToFile('📚 Building knowledge index...');
+            log.debug('Building knowledge index...');
             try {
               const catalog = buildKnowledgeCatalog();
               saveCatalog(catalog);
@@ -117,18 +105,18 @@ export const opencodeKnowledge: Plugin = async () => {
                 (sum, packages) => sum + Object.keys(packages).length,
                 0
               );
-              // await logToFile(`✅ Knowledge catalog built: ${packagesCount} packages`);
+              log.info('Knowledge catalog built', { packagesCount });
             } catch (error) {
-              // await logToFile(`⚠️  Failed to build knowledge catalog: ${error}`);
+              log.warn('Failed to build knowledge catalog', { error: String(error) });
               // Don't fail session start if build fails
             }
           }
 
           await createSessionState(sessionId);
-          // await logToFile(`✅ Session state created`);
+          log.debug('Session state created');
         }
       } catch (error) {
-        // await logToFile(`❌ Error in event: ${error}`);
+        log.error('Error in event', { error: String(error) });
       }
     },
   };
