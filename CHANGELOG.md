@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/msegoviadev/opencode-knowledge/compare/v0.6.0...v0.7.0) (2026-01-18)
+
+
+### Features
+
+* add structured logging with fire-and-forget pattern ([3988eaf](https://github.com/msegoviadev/opencode-knowledge/commit/3988eaf1faad8f76a201faf58d5ca718212564fb))
+
 ## [0.6.0](https://github.com/msegoviadev/opencode-knowledge/compare/v0.5.1...v0.6.0) (2026-01-17)
 
 
